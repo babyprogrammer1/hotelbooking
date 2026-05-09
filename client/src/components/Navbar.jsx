@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useClerk, useUser, UserButton } from '@clerk/react';
 
+// Book icon SVG component
+const BookIcon = ({ className = '', title = 'Book Icon' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className} aria-label={title} role="img">
+        <title>{title}</title>
+        <path d="M19 2H8a2 2 0 0 0-2 2v15a1 1 0 0 0 1.447.894L11 18h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 6H5a2 2 0 0 0-2 2v11a1 1 0 0 0 1.447.894L6 19V6z" />
+    </svg>
+);
 
 
 const Navbar = () => {
@@ -18,10 +25,19 @@ const Navbar = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const [isScrolled, setIsScrolled] = React.useState(false);
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
+
+        if(location.pathname === '/') {
+            setIsScrolled(true);
+            return;
+        } else {
+            setIsScrolled(false);
+        }
+        setIsScrolled(prev => location.pathname !== '/' ? true : prev);
+
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
         };
@@ -45,7 +61,7 @@ const Navbar = () => {
                             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
                         </a>
                     ))}
-                    <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+                    <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`} onClick={() => navigate('/owner')}>
                         Dashboard
                     </button>
                 </div>
@@ -56,7 +72,7 @@ const Navbar = () => {
                 {user ? 
                    (<UserButton>
                         <UserButton.MenuItems>
-                            <UserButton.Action label='My Bookings'  onClick={() => navigate('/my-bookings')}/>
+                            <UserButton.Action label='My Bookings' labelIcon={<BookIcon />}  onClick={() => navigate('/my-bookings')}/>
                         </UserButton.MenuItems>
                    </UserButton>) : 
                    (<button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full ml-4 transition-all duration-500"> 
@@ -66,7 +82,15 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu Button */}
+                
                 <div className="flex items-center gap-3 md:hidden">
+                    {user && (
+                    <UserButton>
+                        <UserButton.MenuItems>
+                            <UserButton.Action label='My Bookings' labelIcon={<BookIcon />}  onClick={() => navigate('/my-bookings')}/>
+                        </UserButton.MenuItems>
+                    </UserButton>
+                    )}
                     <img onClick={()=> setIsMenuOpen(!isMenuOpen)} src={assets.menuIcon} alt="Menu Icon" className={`h-4 ${isScrolled && "invert"}`} />
                 </div>
 
@@ -82,13 +106,17 @@ const Navbar = () => {
                         </a>
                     ))}
 
-                    <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-                        Dashboard
-                    </button>
+                    {user && 
+                        <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all" onClick={() => navigate('/owner') }>
+                            Dashboard
+                        </button>
+                    }
 
-                    <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
-                        Login
-                    </button>
+                    {!user && 
+                        <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
+                            Login
+                        </button>
+                    }
                 </div>
             </nav>
     );
