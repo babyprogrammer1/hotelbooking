@@ -40,7 +40,7 @@ const AddRoom = () => {
         ))}
       </div>
       {/* Room Details */}
-      <div className='w-full flex sm:flex-col sm:gap-4 mt-4'>
+      <div className='w-full flex max-sm:flex-col sm:gap-4 mt-4'>
         <div className='flex-1 max-w-48'>
           <p className='text-gray-800 mt-4'>Room Type</p>
           <select className='border opacity-70 border-gray-300 rounded w-full p-2 mt-1' value={inputs.roomType} onChange={(e) => setInputs({ ...inputs, roomType: e.target.value })}>
@@ -53,7 +53,7 @@ const AddRoom = () => {
         </div>
         <div>
           <p className='text-gray-800 mt-4'>Price <span className='text-xs'>/night</span></p>
-          <input type="number" className='border border-gray-300 rounded w-24 p-2 mt-1' value={inputs.pricePerNight} onChange={(e) => setInputs({ ...inputs, pricePerNight: e.target.value })} />
+          <input type="number" placeholder='0' className='border border-gray-300 rounded w-24 p-2 mt-1' value={inputs.pricePerNight} onChange={(e) => setInputs({ ...inputs, pricePerNight: e.target.value })} />
         </div>
       </div>
       {/* Amenities */}
