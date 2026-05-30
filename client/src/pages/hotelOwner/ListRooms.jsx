@@ -29,9 +29,11 @@ const ListRooms = () => {
                   {item.pricePerNight}
                 </td>
                 <td className='py-3 px-4 text-red-500 text-sm border-t border-gray-300 text-center'>
-                  <input type='checkbox' className='sr-only peer' checked={item.isAvailable} />
-                  <div className='w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200'></div>
-                  <span className='dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full  peer-checked:translate-x-5 transition-transform duration-200 ease-in-out'>Available</span>
+                  <label className='relative inline-flex items-center cursor-pointer text-gary-900 gap-3'>
+                    <input type='checkbox' className='sr-only peer' checked={item.isAvailable} />
+                    <div className='w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200'></div>
+                    <span className='dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full  peer-checked:translate-x-5 transition-transform duration-200 ease-in-out'></span>
+                  </label>
                 </td>
               </tr>
             ))}
